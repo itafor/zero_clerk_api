@@ -10,7 +10,7 @@
 - Run php artisan migrate
 - Run php artisan jwt:secret
 - Run php artisan serve
-- Run php artisan queue:work
+- Run php artisan queue:work //You need this when creating courses from Course factory
 - Open the url below to view and run the endpoints in postman
 
 https://documenter.getpostman.com/view/5369523/SztEZ6Tn

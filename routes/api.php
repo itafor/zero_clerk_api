@@ -34,5 +34,6 @@ Route::group([
 	Route::post('/create','CourseController@createCourses');
 	Route::get('/list','CourseController@listCourses');
 	Route::post('/register','CourseController@courseRegistration');
+    Route::get('/export/excel','CourseController@exportCoursesToExcel')->name('course.export.excel');
 
 });

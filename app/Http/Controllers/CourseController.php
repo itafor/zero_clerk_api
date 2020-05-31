@@ -4,17 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Course;
 use App\CourseRegister;
+use App\Exports\CsvExport;
 use App\Http\Resources\CourseResource;
 use App\Jobs\CreateCourses;
 use Illuminate\Container\factory;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CourseController extends Controller
 {
 
 	 public function __construct()
     {
-        $this->middleware('auth:api', ['except' => ['createCourses']]);
+        $this->middleware('auth:api', ['except' => ['createCourses','exportCoursesToExcel']]);
     }
 
 
@@ -66,5 +68,9 @@ class CourseController extends Controller
 			return response(['error'=>'No course(s) found'],500);
 
     }
+
+     public function exportCoursesToExcel(){
+        return Excel::download(new CsvExport, 'Courses.csv');
+     }
 
 }

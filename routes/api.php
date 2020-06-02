@@ -76,3 +76,24 @@ Route::group([
     Route::post('destroy/{id}', 'SupplierController@destroySupplier');
 
 });
+
+Route::group([
+    'prefix' => 'product'
+], function () {
+
+    //category
+    Route::post('category/store', 'ProductCategoryController@store');
+    Route::get('category/lists', 'ProductCategoryController@listProductCategory');
+    Route::get('category/fetch/{id}', 'ProductCategoryController@fetchProductCategoryById');
+    Route::post('category/update/{id}', 'ProductCategoryController@updateProductCategory');
+    Route::post('category/destroy/{id}', 'ProductCategoryController@destroyProductCategory');
+    //product subcategory
+    Route::post('subcategory/store', 'ProductSubCategoryController@store');
+    Route::get('subcategory/lists', 'ProductSubCategoryController@listProductSubCategory');
+    Route::get('subcategory/fetch/{id}', 'ProductSubCategoryController@fetchProductSubCategoryById');
+    Route::post('subcategory/update/{id}', 'ProductSubCategoryController@updateProductSubCategory');
+    Route::post('subcategory/destroy/{id}', 'ProductSubCategoryController@destroyProductSubCategory');
+
+});
+
+

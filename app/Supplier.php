@@ -44,13 +44,15 @@ class Supplier extends Model
 
   public static function updateSupplier($data)
     {
-      $supplier = self::where('id', $data['supplier_id'])->update([
+      $supplier = self::where([
+        ['id',$data['supplier_id']],
+        ['user_id', authUser()->id]
+    ])->update([
            'business_name' => $data['business_name'],
             'contact_name' =>  $data['contact_name'],
             'phone_number' => $data['phone_number'],
             'street_address' => $data['street_address'],
             'area' => $data['area'],
-            'user_id' => authUser()->id,
             'country_id' => $data['country_id'],
             'state_id' => $data['state_id'],
         ]); 

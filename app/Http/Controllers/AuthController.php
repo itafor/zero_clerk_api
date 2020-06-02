@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use DB;
 
 class AuthController extends Controller
 {
@@ -21,10 +22,13 @@ class AuthController extends Controller
    public function register(Request $request)
     {
     	$validatedData = $request->validate([
-            'name'=>'required',
-    		'email'=>'required|unique:users',
-    		'password'=>'required',
-    	]);
+            'business_name'=>'required',
+            'first_name'=>'required',
+            'last_name'=>'required',
+            'phone_number'=>'required',
+            'email'=>'required|unique:users',
+            'password'=>'required|confirmed',
+        ]);
 
         $validatedData['password'] = bcrypt($validatedData['password']);
 
@@ -59,7 +63,8 @@ class AuthController extends Controller
      */
     public function me()
     {
-        return response()->json(auth()->user());
+         $user_profle = User::where('id',authUser()->id)->with(['country','state','role'])->first();
+            return response()->json(['User profile'=>$user_profle],200);
     }
 
     /**
@@ -99,4 +104,33 @@ class AuthController extends Controller
             'expires_in' => auth()->factory()->getTTL() * 60
         ]);
     }
+
+
+     public function updateUserProfile($userId, Request $request)
+    {
+      $userData = $request->validate([
+            'business_name' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'phone_number' => 'required',
+            'country_id' => 'required',
+            'state_id' => 'required',
+            'area' => 'required',
+            'address' => 'required',
+        ]);
+
+        DB::beginTransaction();
+
+        try{
+          $user = User::updateUser($userId,$request->all());
+            DB::commit();
+        }
+        catch(Exception $e){
+            DB::rollback();
+        return response()->json(['error'=>'Profile update failed'],403);
+        }
+
+        return response()->json(['success'=>'Profile updated successfully'],200);
+    }
+
 }

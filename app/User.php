@@ -17,7 +17,8 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'business_name','first_name','last_name','phone_number','country_id',
+        'state_id','city_id','role_id','area','address','email', 'password',
     ];
 
     /**
@@ -57,4 +58,43 @@ class User extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    
+     public function country(){
+        return $this->belongsTo(Country::class,'country_id','id');
+    }
+
+    public function state(){
+        return $this->belongsTo(State::class,'state_id','id');
+    }
+
+    public function city(){
+        return $this->belongsTo(City::class,'city_id','id');
+    }
+
+    public function role(){
+        return $this->belongsTo(Role::class,'role_id','id');
+    }
+
+    public function myIndustry(){
+            return $this->hasMany(MyIndustry::class,'user_id','id');
+        }
+
+     public static function updateUser($userId,$data)
+    {
+        
+     $user =  self::where('id', $userId)->update([
+            'business_name' => $data['business_name'],
+            'first_name' => $data['first_name'],
+            'last_name' => $data['last_name'],
+            'phone_number' => $data['phone_number'],
+            'country_id' => $data['country_id'],
+            'state_id' => $data['state_id'],
+            //'role_id' => $data['role_id'],
+            'address' => $data['address'],
+            'area' => $data['area'],
+        ]); 
+ return $user;
+    }
+
 }

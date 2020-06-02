@@ -13,6 +13,10 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::get('/fetch/countries','UtilsController@getCountries');
+Route::get('/fetch/state/{countryId}','UtilsController@getStates');
+Route::get('/fetch/industries','UtilsController@getIndustries');
+
 Route::group([
 
     'prefix' => 'auth'
@@ -24,16 +28,29 @@ Route::group([
     Route::post('logout', 'AuthController@logout');
     Route::post('refresh', 'AuthController@refresh');
     Route::post('me', 'AuthController@me');
+    Route::post('/update/user/profile/{id}','AuthController@updateUserProfile')->name('user.update.profile');
+
+});
+
+//Admin area
+Route::prefix("/admin")->middleware(['admin'])->group(function(){
+
+Route::get('/fetch/roles','RoleController@index')->name('role.index');
+Route::post('/store/role','RoleController@store')->name('role.store');
+Route::post('/update/role/{roleId}','RoleController@update')->name('role.update');
+Route::post('/destroy/role/{roleId}','RoleController@destroyRole')->name('role.destroy');
 
 });
 
 Route::group([
-	'prefix' => 'course'
-], function(){
 
-	Route::post('/create','CourseController@createCourses');
-	Route::get('/list','CourseController@listCourses');
-	Route::post('/register','CourseController@courseRegistration');
-    Route::get('/export/excel','CourseController@exportCoursesToExcel')->name('course.export.excel');
+    'prefix' => 'industry'
+
+], function () {
+
+    Route::post('add', 'IndustryController@addIndustries');
+    Route::get('my_industries', 'IndustryController@fetchUserIndustries');
+    Route::get('fetch/{id}', 'IndustryController@fetchMyIndustryById')->name('industry.fetch.id');
+    Route::post('edit/{id}', 'IndustryController@edit_my_industry')->name('industry.update');
 
 });

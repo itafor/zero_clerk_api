@@ -80,6 +80,14 @@ class User extends Authenticatable implements JWTSubject
             return $this->hasMany(MyIndustry::class,'user_id','id');
         }
 
+    public function customers(){
+            return $this->hasMany(Customer::class);
+        }
+
+    public function suppliers(){
+            return $this->hasMany(Supplier::class);
+        }
+
      public static function updateUser($userId,$data)
     {
         

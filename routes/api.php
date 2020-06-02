@@ -54,3 +54,25 @@ Route::group([
     Route::post('edit/{id}', 'IndustryController@edit_my_industry')->name('industry.update');
 
 });
+
+Route::group([
+    'prefix' => 'customer'
+], function () {
+    Route::post('store', 'CustomerController@store');
+    Route::get('lists', 'CustomerController@listCustomers');
+    Route::get('fetch/{id}', 'CustomerController@fetchCustomerById');
+    Route::post('update/{id}', 'CustomerController@update');
+    Route::post('destroy/{id}', 'CustomerController@destroyCustomer');
+
+});
+
+Route::group([
+    'prefix' => 'supplier'
+], function () {
+    Route::post('store', 'SupplierController@store');
+    Route::get('lists', 'SupplierController@listSuppliers');
+    Route::get('fetch/{id}', 'SupplierController@fetchSupplierById');
+    Route::post('update/{id}', 'SupplierController@update');
+    Route::post('destroy/{id}', 'SupplierController@destroySupplier');
+
+});

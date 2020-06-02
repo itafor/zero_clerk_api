@@ -51,7 +51,7 @@ class IndustryController extends Controller
     }
 
 
-     public function edit_my_industry($myIndustryId, Request $request){
+     public function edit_my_industry(Request $request, $myIndustryId){
     	$industryData = $request->validate([
     		'industry_id'=>'required'
     	]);

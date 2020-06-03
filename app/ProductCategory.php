@@ -19,6 +19,10 @@ class ProductCategory extends Model
             return $this->hasMany(ProductSubCategory::class,'prod_cat_id','id');
         }
 
+    public function products(){
+            return $this->hasMany(Product::class,'product_category_id','id');
+        }
+
   public static function createNew($data)
     {
         $product_category = self::create([

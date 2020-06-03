@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\ProductCategory;
 use App\ProductSubCategory;
 use Illuminate\Http\Request;
 
@@ -76,5 +77,22 @@ class ProductSubCategoryController extends Controller
     	return response()->json(['message'=>'Product subcategory deleted successfully']);
     	}
     	return response(['error'=>'Ooops!! Product subcategory not found'],401);
+    }
+
+    public function fetchProductSubCategoriesByProductId($productCatId){
+        $product_subcategories = ProductSubCategory::where([
+            ['prod_cat_id',$productCatId],
+            ['user_id',authUser()->id]
+        ])->get();
+
+        $product_category = ProductCategory::where('id',$productCatId)->first();
+
+        if(count($product_subcategories) >=1 ){
+        return response()->json([
+            'product_category'=>$product_category,
+            'product_subcategories'=>$product_subcategories
+        ]);
+        }
+        return response(['error'=>'Product subcategories not found!!'],403);
     }
 }

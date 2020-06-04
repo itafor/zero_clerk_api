@@ -13,9 +13,29 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/fetch/countries','UtilsController@getCountries');
-Route::get('/fetch/state/{countryId}','UtilsController@getStates');
+;
 Route::get('/fetch/industries','UtilsController@getIndustries');
+
+Route::group([
+
+    'prefix' => 'location'
+
+], function () {
+
+    Route::post('store', 'LocationController@store');
+    Route::get('lists', 'LocationController@listLocations');
+    Route::get('fetch/{id}', 'LocationController@fetchLocationById');
+    Route::post('update/{id}', 'LocationController@update');
+    Route::post('destroy/{id}', 'LocationController@destroyLocation');
+    
+
+    Route::get('countries', 'LocationController@getCountries');
+    Route::get('country/{id}', 'LocationController@getCountry');
+    Route::get('states', 'LocationController@getStates');
+    Route::get('state/{id}', 'LocationController@getState');
+    Route::get('state/country/{id}', 'LocationController@getStatesByCountry');
+
+});
 
 Route::group([
 
@@ -104,6 +124,24 @@ Route::group([
     Route::post('subcategory/update/{id}', 'ProductSubCategoryController@updateProductSubCategory');
     Route::post('subcategory/destroy/{id}', 'ProductSubCategoryController@destroyProductSubCategory');
     Route::get('category/{id}', 'ProductSubCategoryController@fetchProductSubCategoriesByProductId');
+
+});
+
+Route::group([
+    'prefix' => 'category'
+], function () {
+    Route::post('store', 'CategoryController@store');
+    Route::get('lists', 'CategoryController@listCategories');
+    Route::get('fetch/{id}', 'CategoryController@fetchCategoryById');
+    Route::post('update/{id}', 'CategoryController@update');
+    Route::post('destroy/{id}', 'CategoryController@destroyCategory');
+
+    Route::post('subcategory/store', 'SubCategoryController@store');
+    Route::get('subcategory/lists', 'SubCategoryController@listSubCategory');
+    Route::get('subcategory/fetch/{id}', 'SubCategoryController@fetchSubCategoryById');
+    Route::post('subcategory/update/{id}', 'SubCategoryController@update');
+    Route::post('subcategory/destroy/{id}', 'SubCategoryController@destroySubCategory');
+    Route::get('subcategory/category/{id}', 'SubCategoryController@fetchSubCategoriesByCategoryId');
 
 });
 

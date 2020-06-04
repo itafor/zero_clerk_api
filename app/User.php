@@ -80,6 +80,10 @@ class User extends Authenticatable implements JWTSubject
             return $this->hasMany(MyIndustry::class,'user_id','id');
         }
 
+    public function locations(){
+            return $this->hasMany(Location::class);
+        }
+
     public function customers(){
             return $this->hasMany(Customer::class);
         }

@@ -35,7 +35,7 @@ class ParentUserController extends Controller
     	$user = User::create($validatedData);
 
     	if($user){
-    	return response(['message'=>'Successfully registered!!','user'=>$user],200);
+    	return response(['message'=>'Sub user successfully added!!','user'=>$user],200);
     	}
     	return response(['error'=>'Registration failed!!'],403);
     }

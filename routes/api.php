@@ -52,15 +52,21 @@ Route::group([
 
 });
 
-//Admin area
-Route::prefix("/admin")->middleware(['admin'])->group(function(){
 
-Route::get('/fetch/roles','RoleController@index')->name('role.index');
-Route::post('/store/role','RoleController@store')->name('role.store');
-Route::post('/update/role/{roleId}','RoleController@update')->name('role.update');
-Route::post('/destroy/role/{roleId}','RoleController@destroyRole')->name('role.destroy');
+Route::group([
 
+    'prefix' => 'role'
+
+], function () {
+
+    Route::post('store', 'RoleController@storeRole');
+    Route::post('permission/store', 'RoleController@storePermission');
+    Route::post('permission/assign', 'RoleController@assignPermissionToRole');
+    Route::post('permission/remove', 'RoleController@removePermissionFromRole');
+    Route::post('assign/user', 'RoleController@assignRoleToUser');
+   
 });
+
 
 Route::group([
 

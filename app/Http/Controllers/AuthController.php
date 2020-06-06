@@ -63,7 +63,7 @@ class AuthController extends Controller
      */
     public function me()
     {
-         $user_profle = User::where('id',authUser()->id)->with(['country','state','role'])->first();
+         $user_profle = User::where('id',authUser()->id)->with(['country','state','subUsers'])->first();
             return response()->json(['User profile'=>$user_profle],200);
     }
 

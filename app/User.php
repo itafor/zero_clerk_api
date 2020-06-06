@@ -18,7 +18,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $fillable = [
         'business_name','first_name','last_name','phone_number','country_id',
-        'state_id','city_id','role_id','area','address','email', 'password',
+        'state_id','city_id','parent_id','role_id','area','address','email', 'password',
     ];
 
     /**
@@ -99,6 +99,20 @@ class User extends Authenticatable implements JWTSubject
   public function productSubCategories(){
             return $this->hasMany(ProductSubCategory::class);
         }
+
+   public function purchase(){
+            return $this->hasMany(Purchase::class,'user_id','id');
+        }
+
+    public function parent()
+    {
+        return $this->belongsTo(User::class, 'parent_id');
+    }
+
+    public function subUsers()
+    {
+        return $this->hasMany(User::class, 'parent_id');
+    }
 
      public static function updateUser($userId,$data)
     {

@@ -64,6 +64,17 @@ Route::post('/destroy/role/{roleId}','RoleController@destroyRole')->name('role.d
 
 Route::group([
 
+    'prefix' => 'parent'
+
+], function () {
+
+    Route::post('user/add/sub_user', 'ParentUserController@addSubUser');
+    Route::get('user/list/sub_users', 'ParentUserController@listsubUsers');
+
+});
+
+Route::group([
+
     'prefix' => 'industry'
 
 ], function () {

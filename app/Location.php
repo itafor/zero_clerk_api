@@ -26,6 +26,10 @@ class Location extends Model
         return $this->belongsTo(User::class,'user_id','id');
     }
 
+    public function purchase(){
+        return $this->hasMany(Purchase::class,'location_id','id');
+    }
+
    public static function createNew($data)
     {
         $Location = self::create([

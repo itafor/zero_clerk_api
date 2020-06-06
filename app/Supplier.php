@@ -26,6 +26,10 @@ class Supplier extends Model
         return $this->belongsTo(User::class,'user_id','id');
     }
 
+     public function purchase(){
+        return $this->hasMany(Purchase::class,'supplier_id','id');
+    }
+
      public static function createNew($data)
     {
         $supplier = self::create([

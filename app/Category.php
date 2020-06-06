@@ -19,6 +19,10 @@ class Category extends Model
             return $this->hasMany(SubCategory::class,'category_id','id');
         }
 
+      public function purchase(){
+        return $this->hasMany(Purchase::class,'category_id','id');
+    }
+
 
   public static function createNew($data)
     {

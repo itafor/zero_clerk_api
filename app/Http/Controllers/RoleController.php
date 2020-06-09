@@ -50,10 +50,17 @@ class RoleController extends Controller
         $permission = Permission::where('name', $request->permission_name)->first();
 
         $role = Role::findByName($request->role_name);
+
+     $roleHasPermission =  $role->hasPermissionTo($request->permission_name);
+
+        if($roleHasPermission){
+        return response()->json(['error'=>'Permission already exist']);
+        }
+
         if($permission !='' && $role !=''){
      $assignPermission =  $role->givePermissionTo($request->permission_name);
      if($assignPermission){
-        return response()->json(['message'=>'permission successfully assigned to selected role']);
+        return response()->json(['message'=>'Permission successfully assigned to selected role']);
      }
         return response()->json(['error'=>'An attempt to assign permission to role failed']);
 
@@ -91,13 +98,25 @@ public function removePermissionFromRole(Request $request){
             'roles'=>'required',
         ]);
 
+        $data=$request->all();
+
         $user = User::where([
             ['id',$request->user_id],
             ['parent_id','!=',null]
         ])->first();
+       // ->orwhere('id',authUser()->id)->first();
 
-        if($user){
-       $assignedRole = $user->assignRole($request->roles);
+     // $userHasRole = $user->hasAnyRole($data['roles']);
+
+     // if($userHasRole){
+     //   return response()->json(['error'=>'Selected role already exist']);
+     // }
+    
+       if($user){
+            foreach ($data['roles'] as $key => $role) {
+         $assignedRole = $user->assignRole($role['name']);
+            }
+
      if($assignedRole){
         return response()->json(['message'=>'Role successfully assigned to selected user']);
      }
@@ -107,5 +126,90 @@ public function removePermissionFromRole(Request $request){
         return response()->json(['error'=>'User does not exist']);
     }
 }
+
+    public function revokeUserRole(Request $request){
+
+        $validatedData = $request->validate([
+            'user_id'=>'required',
+            'role'=>'required',
+        ]);
+
+        $user = User::where([
+            ['id',$request->user_id],
+            ['parent_id','!=',null]
+        ])->first();
+
+        if($user){
+       $revokeRole =  $user->removeRole($request->role);
+
+     if($revokeRole){
+        return response()->json(['message'=>'Role successfully revoked']);
+     }
+        return response()->json(['error'=>'An attempt to revoke failed']);
+
+    }else{
+        return response()->json(['error'=>'User does not exist']);
+    }
+}
    
+
+    public function giveDirectPermissionToUser(Request $request){
+
+        $validatedData = $request->validate([
+            'user_id'=>'required',
+            'permissions'=>'required',
+        ]);
+
+        $data=$request->all();
+
+        $user = User::where([
+            ['id',$request->user_id],
+            ['parent_id','!=',null]
+        ])->first();
+
+     // $userHasRole = $user->hasAnyRole($data['roles']);
+
+     // if($userHasRole){
+     //   return response()->json(['error'=>'Selected role already exist']);
+     // }
+    
+       if($user){
+          $assignPermission = $user->givePermissionTo($data['permissions']);
+
+     if($assignPermission){
+        return response()->json(['message'=>'Permission(s) successfully assigned to selected user']);
+     }
+        return response()->json(['error'=>'An attempt to assign selected permissions failed']);
+
+    }else{
+        return response()->json(['error'=>'User does not exist']);
+    }
+}
+
+public function removeUserDirectPermission(Request $request){
+
+        $validatedData = $request->validate([
+            'permission_name'=>'required',
+            'user_id'=>'required',
+        ]);
+
+
+         $data=$request->all();
+
+        $user = User::where([
+            ['id',$request->user_id],
+            ['parent_id','!=',null]
+        ])->first();
+
+        if($user){
+         $permission_revoke = $user->revokePermissionTo($request->permission_name);
+     if($permission_revoke){
+        return response()->json(['message'=>'permission successfully revoke from the selected user']);
+     }
+        return response()->json(['error'=>'An attempt to revoke permission from the selected user failed']);
+
+    }else{
+        return response()->json(['error'=>'User does not exist']);
+    }
+}
 }

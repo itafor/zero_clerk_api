@@ -22,9 +22,9 @@ Route::group([
 
 ], function () {
 
-    Route::post('store', 'LocationController@store');
-    Route::get('lists', 'LocationController@listLocations');
-    Route::get('fetch/{id}', 'LocationController@fetchLocationById');
+    Route::post('store', 'LocationController@store')->middleware('permission:Add location');
+    Route::get('lists', 'LocationController@listLocations')->middleware('permission:View locations');
+    Route::get('fetch/{id}', 'LocationController@fetchLocationById')->middleware('permission:View location');
     Route::post('update/{id}', 'LocationController@update');
     Route::post('destroy/{id}', 'LocationController@destroyLocation');
     
@@ -64,7 +64,13 @@ Route::group([
     Route::post('permission/assign', 'RoleController@assignPermissionToRole');
     Route::post('permission/remove', 'RoleController@removePermissionFromRole');
     Route::post('assign/user', 'RoleController@assignRoleToUser');
-   
+    Route::post('user/revoke', 'RoleController@revokeUserRole');
+    Route::post('give/permission/user', 'RoleController@giveDirectPermissionToUser');
+    Route::post('remove/user/direct/permission', 'RoleController@removeUserDirectPermission');
+
+    Route::post('assign/super_admin', 'ParentUserController@assignRoleToSuperAdmin');
+
+
 });
 
 

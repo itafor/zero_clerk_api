@@ -10,7 +10,7 @@ class ProductSubCategoryController extends Controller
 {
      public function __construct()
     {
-        $this->middleware('auth:api');
+         $this->middleware(['auth:api','admin'],['except' => ['listProductSubCategory','fetchProductSubCategoryById','fetchProductSubCategoriesByProductCategoryId']]);
     }
       
   public function store(Request $request)
@@ -47,9 +47,7 @@ class ProductSubCategoryController extends Controller
 
 
      public function listProductSubCategory(Request $request){
-    	$product_subcategories = ProductSubCategory::where([
-    		['user_id',authUser()->id]
-    	])->with(['productCategory'])->get();
+    	$product_subcategories = ProductSubCategory::with(['productCategory'])->get();
 
     	if(count($product_subcategories) >=1 ){
     	return response()->json(['product_subcategories'=>$product_subcategories]);
@@ -59,7 +57,6 @@ class ProductSubCategoryController extends Controller
 
      public function fetchProductSubCategoryById($prod_subcat_id){
     	$product_subcategory = ProductSubCategory::where([
-    		['user_id',authUser()->id],
     		['id',$prod_subcat_id]
     	])->with(['productCategory'])->first();
 
@@ -79,10 +76,9 @@ class ProductSubCategoryController extends Controller
     	return response(['error'=>'Ooops!! Product subcategory not found'],401);
     }
 
-    public function fetchProductSubCategoriesByProductId($productCatId){
+    public function fetchProductSubCategoriesByProductCategoryId($productCatId){
         $product_subcategories = ProductSubCategory::where([
             ['prod_cat_id',$productCatId],
-            ['user_id',authUser()->id]
         ])->get();
 
         $product_category = ProductCategory::where('id',$productCatId)->first();

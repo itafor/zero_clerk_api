@@ -87,6 +87,17 @@ Route::group([
 
 Route::group([
 
+    'prefix' => 'admin'
+
+], function () {
+
+    Route::get('users', 'AdminController@listUsers');
+    Route::get('user/{id}', 'AdminController@listUser');
+
+});
+
+Route::group([
+
     'prefix' => 'industry'
 
 ], function () {
@@ -101,11 +112,11 @@ Route::group([
 Route::group([
     'prefix' => 'customer'
 ], function () {
-    Route::post('store', 'CustomerController@store');
-    Route::get('lists', 'CustomerController@listCustomers');
-    Route::get('fetch/{id}', 'CustomerController@fetchCustomerById');
-    Route::post('update/{id}', 'CustomerController@update');
-    Route::post('destroy/{id}', 'CustomerController@destroyCustomer');
+    Route::post('store', 'CustomerController@store')->middleware('permission:Add customer');;
+    Route::get('lists', 'CustomerController@listCustomers')->middleware('permission:List customers');
+    Route::get('fetch/{id}', 'CustomerController@fetchCustomerById')->middleware('permission:View customer');
+    Route::post('update/{id}', 'CustomerController@update')->middleware('permission:Update customer');;
+    Route::post('destroy/{id}', 'CustomerController@destroyCustomer')->middleware('permission:Delete customer');;
 
 });
 
@@ -146,7 +157,7 @@ Route::group([
     Route::get('subcategory/fetch/{id}', 'ProductSubCategoryController@fetchProductSubCategoryById');
     Route::post('subcategory/update/{id}', 'ProductSubCategoryController@updateProductSubCategory');
     Route::post('subcategory/destroy/{id}', 'ProductSubCategoryController@destroyProductSubCategory');
-    Route::get('category/{id}', 'ProductSubCategoryController@fetchProductSubCategoriesByProductId');
+    Route::get('category/{id}', 'ProductSubCategoryController@fetchProductSubCategoriesByProductCategoryId');
 
 });
 

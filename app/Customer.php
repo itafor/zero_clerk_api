@@ -34,7 +34,7 @@ class Customer extends Model
             'phone_number' => $data['phone_number'],
             'street_address' => $data['street_address'],
             'area' => $data['area'],
-            'user_id' => authUser()->id,
+            'user_id' => authUser()->parent_id == null ? authUser()->id : authUser()->parent_id,
             'country_id' => $data['country_id'],
             'state_id' => $data['state_id'],
         ]); 
@@ -50,7 +50,6 @@ class Customer extends Model
             'phone_number' => $data['phone_number'],
             'street_address' => $data['street_address'],
             'area' => $data['area'],
-            'user_id' => authUser()->id,
             'country_id' => $data['country_id'],
             'state_id' => $data['state_id'],
         ]); 

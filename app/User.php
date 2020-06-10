@@ -19,7 +19,7 @@ class User extends Authenticatable implements JWTSubject
      */
     protected $fillable = [
         'business_name','first_name','last_name','phone_number','country_id',
-        'state_id','city_id','parent_id','role_id','area','address','email', 'password',
+        'state_id','city_id','parent_id','role','area','address','email', 'password',
     ];
 
     /**
@@ -112,7 +112,7 @@ class User extends Authenticatable implements JWTSubject
 
     public function subUsers()
     {
-        return $this->hasMany(User::class, 'parent_id');
+        return $this->hasMany(User::class, 'parent_id')->with(['country','state']);
     }
 
      public static function updateUser($userId,$data)
@@ -125,7 +125,7 @@ class User extends Authenticatable implements JWTSubject
             'phone_number' => $data['phone_number'],
             'country_id' => $data['country_id'],
             'state_id' => $data['state_id'],
-            //'role_id' => $data['role_id'],
+            //'role' => $data['role'],
             'address' => $data['address'],
             'area' => $data['area'],
         ]); 

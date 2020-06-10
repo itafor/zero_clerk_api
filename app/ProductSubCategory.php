@@ -28,7 +28,7 @@ class ProductSubCategory extends Model
         $product_subcategory = self::create([
             'name' => $data['name'],
             'description' =>  $data['description'],
-            'user_id' => authUser()->id,
+            // 'user_id' => authUser()->id,
             'prod_cat_id' => $data['prod_cat_id']
         ]); 
         
@@ -38,7 +38,7 @@ class ProductSubCategory extends Model
   public static function updateProdSubCategory($data)
     {
       $product_subcategory = self::where([
-    		['user_id',authUser()->id],
+    		// ['user_id',authUser()->id],
     		['id',$data['prod_sub_cat_id']]
     	])->update([
            'name' => $data['name'],

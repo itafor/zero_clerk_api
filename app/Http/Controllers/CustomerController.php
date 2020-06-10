@@ -58,7 +58,7 @@ class CustomerController extends Controller
 
      public function listCustomers(Request $request){
     	$customers = Customer::where([
-    		['user_id',authUser()->id]
+    		['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id]
     	])->with(['country','state','user'])->get();
 
     	if(count($customers) >=1 ){
@@ -69,7 +69,7 @@ class CustomerController extends Controller
 
      public function fetchCustomerById($customer_id){
     	$customer = Customer::where([
-    		['user_id',authUser()->id],
+    		['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id],
     		['id',$customer_id]
     	])->with(['country','state','user'])->first();
 

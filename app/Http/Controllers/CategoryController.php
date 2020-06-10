@@ -9,7 +9,7 @@ class CategoryController extends Controller
 {
      public function __construct()
     {
-        $this->middleware('auth:api');
+        $this->middleware(['auth:api','admin'],['except' => ['listCategories','fetchCategoryById']]);
     }
       
   public function store(Request $request)
@@ -44,9 +44,7 @@ class CategoryController extends Controller
 
 
      public function listCategories(Request $request){
-    	$categories = Category::where([
-    		['user_id',authUser()->id]
-    	])->with(['subCategories'])->get();
+    	$categories = Category::with(['subCategories'])->get();
 
     	if(count($categories) >=1 ){
     	return response()->json(['categories'=>$categories]);
@@ -56,7 +54,6 @@ class CategoryController extends Controller
 
      public function fetchCategoryById($prod_cat_id){
     	$category = Category::where([
-    		['user_id',authUser()->id],
     		['id',$prod_cat_id]
     	])->with(['subCategories'])->first();
 

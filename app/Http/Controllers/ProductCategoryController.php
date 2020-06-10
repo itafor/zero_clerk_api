@@ -9,7 +9,8 @@ class ProductCategoryController extends Controller
 {
      public function __construct()
     {
-        $this->middleware('auth:api');
+        $this->middleware(['auth:api','admin'],['except' => ['listProductCategory','fetchProductCategoryById']]);
+       
     }
       
   public function store(Request $request)
@@ -44,9 +45,7 @@ class ProductCategoryController extends Controller
 
 
      public function listProductCategory(Request $request){
-    	$product_categories = ProductCategory::where([
-    		['user_id',authUser()->id]
-    	])->with(['productSubCategories'])->get();
+    	$product_categories = ProductCategory::with(['productSubCategories'])->get();
 
     	if(count($product_categories) >=1 ){
     	return response()->json(['product_categories'=>$product_categories]);
@@ -56,7 +55,7 @@ class ProductCategoryController extends Controller
 
      public function fetchProductCategoryById($prod_cat_id){
     	$product_category = ProductCategory::where([
-    		['user_id',authUser()->id],
+    		// ['user_id',authUser()->id],
     		['id',$prod_cat_id]
     	])->with(['productSubCategories'])->first();
 

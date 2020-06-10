@@ -28,7 +28,7 @@ class ProductCategory extends Model
         $product_category = self::create([
             'name' => $data['name'],
             'description' =>  $data['description'],
-            'user_id' => authUser()->id,
+            // 'user_id' => authUser()->id,
         ]); 
         
         return $product_category;
@@ -37,7 +37,7 @@ class ProductCategory extends Model
    public static function updateProdCategory($data)
     {
       $product_category = self::where([
-    		['user_id',authUser()->id],
+    		// ['user_id',authUser()->id],
     		['id',$data['prod_cat_id']]
     	])->update([
            'name' => $data['name'],

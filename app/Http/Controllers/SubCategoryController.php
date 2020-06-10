@@ -10,7 +10,7 @@ class SubCategoryController extends Controller
 {
      public function __construct()
     {
-        $this->middleware('auth:api');
+        $this->middleware(['auth:api','admin'],['except' => ['listSubCategory','fetchSubCategoryById','fetchSubCategoriesByCategoryId']]);
     }
       
   public function store(Request $request)
@@ -48,7 +48,6 @@ class SubCategoryController extends Controller
 
      public function listSubCategory(Request $request){
     	$subcategories = SubCategory::where([
-    		['user_id',authUser()->id]
     	])->with(['category'])->get();
 
     	if(count($subcategories) >=1 ){
@@ -59,7 +58,6 @@ class SubCategoryController extends Controller
 
      public function fetchSubCategoryById($sub_category_id){
     	$subcategory = SubCategory::where([
-    		['user_id',authUser()->id],
     		['id',$sub_category_id]
     	])->with(['category'])->first();
 
@@ -82,7 +80,6 @@ class SubCategoryController extends Controller
     public function fetchSubCategoriesByCategoryId($CatId){
         $subcategories = SubCategory::where([
             ['category_id',$CatId],
-            ['user_id',authUser()->id]
         ])->get();
 
         $category = Category::where('id',$CatId)->first();

@@ -29,7 +29,6 @@ class SubCategory extends Model
         $subcategory = self::create([
             'name' => $data['name'],
             'description' =>  $data['description'],
-            'user_id' => authUser()->id,
             'category_id' => $data['category_id']
         ]); 
         
@@ -39,7 +38,6 @@ class SubCategory extends Model
   public static function update_SubCategory($data)
     {
       $subcategory = self::where([
-    		['user_id',authUser()->id],
     		['id',$data['sub_category_id']]
     	])->update([
            'name' => $data['name'],

@@ -29,7 +29,6 @@ class Category extends Model
         $category = self::create([
             'name' => $data['name'],
             'description' =>  $data['description'],
-            'user_id' => authUser()->id,
         ]); 
         
         return $category;
@@ -38,7 +37,6 @@ class Category extends Model
    public static function updateCategory($data)
     {
       $category = self::where([
-    		['user_id',authUser()->id],
     		['id',$data['category_id']]
     	])->update([
            'name' => $data['name'],

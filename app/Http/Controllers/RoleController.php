@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
@@ -38,6 +39,36 @@ class RoleController extends Controller
 
        $permission = Permission::create(['name' => $request->name]);
         return response()->json(['message'=>'permission created successfully']);
+    }
+
+    public function listPermissions(Request $request){
+        $permissions = Permission::all();
+
+        if(count($permissions) >= 1){
+        return response()->json(['permissions'=>$permissions]);
+        }
+        return response(['error'=>'permission not found!!'],401);
+    }
+
+
+//working on this
+    public function list_user_permissions(Request $request,$user_id){
+        $user = User::where('id',$user_id)->first();
+        if($user){
+
+        $permissions = DB::table('model_has_permissions')->where('model_id',$user->id)->get();
+
+        return response()->json(['permissions'=>$permissions]);
+        }
+    }
+
+     public function listRoles(Request $request){
+        $roles = Role::all();
+
+        if(count($roles) >= 1){
+        return response()->json(['roles'=>$roles]);
+        }
+        return response(['error'=>'role not found!!'],401);
     }
 
     public function assignPermissionToRole(Request $request){

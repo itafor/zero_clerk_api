@@ -67,8 +67,14 @@ Route::group([
     Route::post('user/revoke', 'RoleController@revokeUserRole');
     Route::post('give/permission/user', 'RoleController@giveDirectPermissionToUser');
     Route::post('remove/user/direct/permission', 'RoleController@removeUserDirectPermission');
+    Route::get('permission/lists', 'RoleController@listPermissions');
+    Route::get('lists', 'RoleController@listRoles');
+    Route::get('user/permission/{id}', 'RoleController@list_user_permissions');
+
 
     Route::post('assign/super_admin', 'ParentUserController@assignRoleToSuperAdmin');
+
+
 
 
 });
@@ -102,10 +108,16 @@ Route::group([
 
 ], function () {
 
-    Route::post('add', 'IndustryController@addIndustries');
-    Route::get('my_industries', 'IndustryController@fetchUserIndustries');
-    Route::get('fetch/{id}', 'IndustryController@fetchMyIndustryById')->name('industry.fetch.id');
-    Route::post('edit/{id}', 'IndustryController@edit_my_industry')->name('industry.update');
+    Route::post('add', 'IndustryController@addIndustries')->middleware('permission:Add industry');
+;
+    Route::get('my_industries', 'IndustryController@fetchUserIndustries')->middleware('permission:List industries');
+
+    Route::get('fetch/{id}', 'IndustryController@fetchMyIndustryById')->name('industry.fetch.id')->middleware('permission:View industry');
+
+    Route::post('edit/{id}', 'IndustryController@edit_my_industry')->name('industry.update')->middleware('permission:Update industry');
+
+    Route::post('destroy/{id}', 'IndustryController@destroyIndustry')->middleware('permission:Delete industry');
+
 
 });
 

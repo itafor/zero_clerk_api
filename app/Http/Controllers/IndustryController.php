@@ -31,7 +31,8 @@ class IndustryController extends Controller
     }
 
     public function fetchUserIndustries(Request $request){
-    	$my_industries = MyIndustry::where('user_id',authUser()->id)->with(['industry'])->get();
+    	$my_industries = MyIndustry::where('user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id
+       )->with(['industry'])->get();
     	if(count($my_industries) >=1 ){
     	return response()->json(['My industries'=>$my_industries]);
     	}
@@ -40,7 +41,7 @@ class IndustryController extends Controller
 
        public function fetchMyIndustryById($myIndustryId){
     	$my_industry = MyIndustry::where([
-    		['user_id',authUser()->id],
+    		['user_id',authUser()->parent_id == null ? authUser()->id : authUser()->parent_id],
     		['id',$myIndustryId]
     	])->with(['industry'])->first();
 
@@ -56,8 +57,7 @@ class IndustryController extends Controller
     		'industry_id'=>'required'
     	]);
 
-    	$industry = MyIndustry::where('id',$myIndustryId)
-    	            ->where('user_id',authUser()->id)->first();
+    	$industry = MyIndustry::where('id',$myIndustryId)->first();
     	if($industry){
     		$industry->industry_id = $request->industry_id;
     		$industry->description = $request->description;
@@ -66,5 +66,15 @@ class IndustryController extends Controller
     	return response()->json(['message'=>'Selected industry updated successfully']);
     	}
     	return response(['error'=>'Ooops!! Something went wrong'],401);
+    }
+
+    public function destroyIndustry($id){
+        $industry = MyIndustry::find($id);
+
+  if($industry){
+    $industry->delete();
+        return response()->json(['message'=>'Industry deleted successfully']);
+        }
+        return response(['error'=>'Ooops!! Industry not found'],401);
     }
 }

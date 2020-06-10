@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -114,6 +115,7 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(User::class, 'parent_id')->with(['country','state']);
     }
+
 
      public static function updateUser($userId,$data)
     {

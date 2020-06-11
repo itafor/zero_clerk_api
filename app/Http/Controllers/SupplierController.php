@@ -57,7 +57,7 @@ class SupplierController extends Controller
 
      public function listSuppliers(Request $request){
     	$suppliers = Supplier::where([
-    		['user_id',authUser()->id]
+    		['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id]
     	])->with(['country','state','user'])->get();
 
     	if(count($suppliers) >=1 ){
@@ -68,7 +68,7 @@ class SupplierController extends Controller
 
      public function fetchSupplierById($supplier_id){
     	$supplier = Supplier::where([
-    		['user_id',authUser()->id],
+    		['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id],
     		['id',$supplier_id]
     	])->with(['country','state','user'])->first();
 

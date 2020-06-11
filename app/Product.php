@@ -33,7 +33,7 @@ class Product extends Model
             'product_sub_category_id' => $data['product_sub_category_id'],
             'selling_price' =>  $data['selling_price'],
             'description' =>  $data['description'],
-            'user_id' => authUser()->id,
+            'user_id' => authUser()->parent_id == null ? authUser()->id : authUser()->parent_id,
         ]); 
         
         return $product;
@@ -42,7 +42,7 @@ class Product extends Model
    public static function updateProd($data)
     {
       $product = self::where([
-    		['user_id',authUser()->id],
+        ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id],
     		['id',$data['product_id']]
     	])->update([
             'name' => $data['name'],

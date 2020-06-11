@@ -27,7 +27,8 @@ class ProductController extends Controller
         $product = Product::where([ 
             ['product_category_id',$data['product_category_id']],
             ['product_sub_category_id',$data['product_sub_category_id']],
-            ['name',$data['name']]
+            ['name',$data['name']],
+            ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id]
         ])->first();
         if($product){
         return response(['error'=>'Product already exist!!'],403);
@@ -63,7 +64,7 @@ class ProductController extends Controller
 
  public function listProducts(Request $request){
     	$products = Product::where([
-    		['user_id',authUser()->id]
+    		['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id]
     	])->with(['category','subcategory'])->get();
 
     	if(count($products) >=1 ){
@@ -74,7 +75,7 @@ class ProductController extends Controller
 
  public function fetchProductById($prod_id){
     	$product = Product::where([
-    		['user_id',authUser()->id],
+    		['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id],
     		['id',$prod_id]
     	])->with(['category','subcategory'])->first();
 
@@ -96,7 +97,7 @@ class ProductController extends Controller
 
     public function fetchProductsByCategoryId($categoryId){
         $products = Product::where([
-            ['user_id',authUser()->id],
+            ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id],
             ['product_category_id',$categoryId]
         ])->with(['category','subcategory'])->get();
 
@@ -108,7 +109,7 @@ class ProductController extends Controller
 
     public function fetchProductsBySubCategoryId($subcategoryId){
         $products = Product::where([
-            ['user_id',authUser()->id],
+            ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id],
             ['product_sub_category_id',$subcategoryId]
         ])->with(['category','subcategory'])->get();
 

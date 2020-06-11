@@ -44,7 +44,10 @@ class Customer extends Model
 
   public static function updateCustomer($data)
     {
-      $customer = self::where('id', $data['customer_id'])->update([
+      $customer = self::where([ 
+        ['id', $data['customer_id']],
+        ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id] 
+    ])->update([
            'business_name' => $data['business_name'],
             'contact_name' =>  $data['contact_name'],
             'phone_number' => $data['phone_number'],

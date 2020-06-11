@@ -135,11 +135,11 @@ Route::group([
 Route::group([
     'prefix' => 'supplier'
 ], function () {
-    Route::post('store', 'SupplierController@store');
-    Route::get('lists', 'SupplierController@listSuppliers');
-    Route::get('fetch/{id}', 'SupplierController@fetchSupplierById');
-    Route::post('update/{id}', 'SupplierController@update');
-    Route::post('destroy/{id}', 'SupplierController@destroySupplier');
+    Route::post('store', 'SupplierController@store')->middleware('permission:Add supplier');;
+    Route::get('lists', 'SupplierController@listSuppliers')->middleware('permission:List suppliers');;
+    Route::get('fetch/{id}', 'SupplierController@fetchSupplierById')->middleware('permission:View supplier');;
+    Route::post('update/{id}', 'SupplierController@update')->middleware('permission:Update supplier');;
+    Route::post('destroy/{id}', 'SupplierController@destroySupplier')->middleware('permission:Delete supplier');
 
 });
 
@@ -148,13 +148,13 @@ Route::group([
 ], function () {
 
     //product
-    Route::post('store', 'ProductController@store');
-    Route::get('lists', 'ProductController@listProducts');
-    Route::get('fetch/{id}', 'ProductController@fetchProductById');
-    Route::post('update/{id}', 'ProductController@updateProduct');
-    Route::post('destroy/{id}', 'ProductController@destroyProduct');
-    Route::get('fetch/category/{id}', 'ProductController@fetchProductsByCategoryId');
-    Route::get('fetch/subcategory/{id}', 'ProductController@fetchProductsBySubCategoryId');
+    Route::post('store', 'ProductController@store')->middleware('permission:Add product');
+    Route::get('lists', 'ProductController@listProducts')->middleware('permission:List products');
+    Route::get('fetch/{id}', 'ProductController@fetchProductById')->middleware('permission:View product');
+    Route::post('update/{id}', 'ProductController@updateProduct')->middleware('permission:Update product');
+    Route::post('destroy/{id}', 'ProductController@destroyProduct')->middleware('permission:Delete product');
+    Route::get('fetch/category/{id}', 'ProductController@fetchProductsByCategoryId')->middleware('permission:View product by category');
+    Route::get('fetch/subcategory/{id}', 'ProductController@fetchProductsBySubCategoryId')->middleware('permission:View product by subcategory');
 
     //category
     Route::post('category/store', 'ProductCategoryController@store');

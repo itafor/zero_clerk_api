@@ -38,7 +38,7 @@ class Supplier extends Model
             'phone_number' => $data['phone_number'],
             'street_address' => $data['street_address'],
             'area' => $data['area'],
-            'user_id' => authUser()->id,
+            'user_id' => authUser()->parent_id == null ? authUser()->id : authUser()->parent_id,
             'country_id' => $data['country_id'],
             'state_id' => $data['state_id'],
         ]); 
@@ -50,7 +50,7 @@ class Supplier extends Model
     {
       $supplier = self::where([
         ['id',$data['supplier_id']],
-        ['user_id', authUser()->id]
+        ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id]
     ])->update([
            'business_name' => $data['business_name'],
             'contact_name' =>  $data['contact_name'],

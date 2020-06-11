@@ -17,7 +17,7 @@ class MyIndustry extends Model
     	foreach ($data['industries'] as $key => $industry) {
     	$my_industries = self::create([
     		'industry_id' => $industry['industry_id'],
-    		'user_id' => authUser()->id,
+    		'user_id' => authUser()->parent_id == null ? authUser()->id : authUser()->parent_id,
     		'description' => $industry['description'],
     	]);
 

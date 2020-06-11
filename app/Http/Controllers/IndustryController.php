@@ -57,7 +57,10 @@ class IndustryController extends Controller
     		'industry_id'=>'required'
     	]);
 
-    	$industry = MyIndustry::where('id',$myIndustryId)->first();
+    	$industry = MyIndustry::where([
+            ['id',$myIndustryId],
+            ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id]
+        ])->first();
     	if($industry){
     		$industry->industry_id = $request->industry_id;
     		$industry->description = $request->description;

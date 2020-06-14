@@ -71,12 +71,7 @@ Route::group([
     Route::get('lists', 'RoleController@listRoles');
     Route::get('user/permission/{id}', 'RoleController@list_user_permissions');
 
-
     Route::post('assign/super_admin', 'ParentUserController@assignRoleToSuperAdmin');
-
-
-
-
 });
 
 
@@ -88,6 +83,16 @@ Route::group([
 
     Route::post('user/add/sub_user', 'ParentUserController@addSubUser');
     Route::get('user/list/sub_users', 'ParentUserController@listsubUsers');
+
+});
+
+Route::group([
+
+    'prefix' => 'payment'
+
+], function () {
+
+    Route::post('store/{payable_id}', 'PaymentController@store');
 
 });
 
@@ -171,6 +176,17 @@ Route::group([
     Route::post('subcategory/destroy/{id}', 'ProductSubCategoryController@destroyProductSubCategory');
     Route::get('category/{id}', 'ProductSubCategoryController@fetchProductSubCategoriesByProductCategoryId');
 
+});
+
+Route::group([
+    'prefix' => 'purchase'
+], function () {
+
+    Route::post('store', 'PurchaseController@store')->middleware('permission:add purchase');
+    Route::get('lists', 'PurchaseController@listPurchases')->middleware('permission:list purchases');
+    Route::get('fetch/{id}', 'PurchaseController@fetchPurchaseById')->middleware('permission:View purchase');
+    Route::post('update/{id}', 'PurchaseController@update')->middleware('permission:Update purchase');
+    Route::post('destroy/{id}', 'PurchaseController@destroyPurchase')->middleware('permission:Delete purchase');
 });
 
 Route::group([

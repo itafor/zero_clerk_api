@@ -5,13 +5,13 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Purchase extends Model
+class Sale extends Model
 {
-    use SoftDeletes;
+     use SoftDeletes;
 
       protected $fillable = [
         'category_id','sub_category_id','item','quantity','industry_id','balance','status',
-        'unit_cost','total_cost','payment_type','user_id','supplier_id','location_id', 
+        'unit_cost','total_cost','payment_type','user_id','customer_id','location_id', 
     ];
 
 
@@ -27,8 +27,8 @@ class Purchase extends Model
         return $this->belongsTo(User::class,'user_id','id');
     }
 
-     public function supplier(){
-        return $this->belongsTo(Supplier::class,'supplier_id','id');
+     public function customer(){
+        return $this->belongsTo(Customer::class,'customer_id','id');
     }
 
      public function location(){
@@ -48,7 +48,7 @@ class Purchase extends Model
 
     $totalCost = $data['unit_cost'] * $data['quantity'];
 
-        $purchase = self::create([
+        $sale = self::create([
             'category_id' => $data['category_id'],
             'sub_category_id' =>  $data['sub_category_id'],
             'item' => $data['item'],
@@ -59,18 +59,18 @@ class Purchase extends Model
             'total_cost' => $totalCost,
             'balance' => $totalCost,
             'status' => 'Pending',
-            'payment_type' => 'Purchase',
-            'supplier_id' => $data['supplier_id'],
+            'payment_type' => 'Sale',
+            'customer_id' => $data['customer_id'],
             'location_id' => $data['location_id'],
         ]); 
         
-        return $purchase;
+        return $sale;
     }
 
-  public static function updatePurchase($data)
+    public static function updateSale($data)
     {
-      $purchase = self::where([
-        ['id',$data['purchase_id']],
+      $sale = self::where([
+        ['id',$data['sale_id']],
         ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id]
     ])->update([
            'category_id' => $data['category_id'],
@@ -80,13 +80,12 @@ class Purchase extends Model
             'industry_id' => $data['industry_id'],
             //'unit_cost' => $data['unit_cost'],
             //'status' => $data['status'],
-            'payment_type' => 'Purchase',
-            'supplier_id' => $data['supplier_id'],
+            'payment_type' => 'Sale',
+            'customer_id' => $data['customer_id'],
             'location_id' => $data['location_id'],
         ]); 
 
-      return $purchase;
+      return $sale;
 
     }
-
 }

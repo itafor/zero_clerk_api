@@ -21,7 +21,6 @@ class PurchaseController extends Controller
             'quantity'=>'required',
             'industry_id'=>'required',
             'unit_cost'=>'required',
-            'payment_type'=>'required',
             'location_id'=>'required',
         ]);
 
@@ -36,13 +35,12 @@ class PurchaseController extends Controller
      public function update(Request $request,$purchase_id)
     {
     	$validatedData = $request->validate([
-             'category_id'=>'required',
+            'category_id'=>'required',
             'sub_category_id'=>'required',
             'item'=>'required',
             'quantity'=>'required',
             'industry_id'=>'required',
             'unit_cost'=>'required',
-            'payment_type'=>'required',
             'location_id'=>'required',
         ]);
 
@@ -60,7 +58,7 @@ class PurchaseController extends Controller
      public function listPurchases(Request $request){
     	$purchases = Purchase::where([
         ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id]
-    	])->with(['category','subcategory','user','supplier','location','industry'])->get();
+    	])->with(['category','subcategory','user','supplier','location','industry','payments'])->get();
 
     	if(count($purchases) >=1 ){
     	return response()->json(['purchases'=>$purchases]);

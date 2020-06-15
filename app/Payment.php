@@ -27,8 +27,8 @@ class Payment extends Model
    // $totalCost = $data['unit_cost'] * $data['quantity'];
 
         $payment = self::create([
-            'payment_id' => $data['payable_id'],
-            'payment_type' => $data['payable_type'],
+            'payment_id' => $data['payment_id'],
+            'payment_type' => $data['payment_type'],
             'payment_method' => $data['payment_method'],
             //'total_cost' => $data['total_cost'],
             'amount_paid' => $data['amount_paid'],

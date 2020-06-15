@@ -13,10 +13,10 @@ class PaymentController extends Controller
     }
 
       
-  public function store(Request $request, $payable_id)
+  public function store(Request $request, $payment_id)
     {
     	$validatedData = $request->validate([
-            'payable_type'=>'required',
+            'payment_type'=>'required',
             'balance'=>'required',
             'amount_paid'=>'required',
             'payment_method'=>'required',
@@ -27,7 +27,7 @@ class PaymentController extends Controller
 
     	if($data['payment_method'] == 'Cash'){
     		if($data['amount_paid'] != $data['balance']){
-    	return response(['error'=>'Amount paid must be equal to total cost for cash payment'],403);
+    	return response(['error'=>'Amount paid must be equal to balance for cash payment'],403);
     		}
     	}
 
@@ -36,8 +36,8 @@ class PaymentController extends Controller
     		}
        
 
-        $data['payable_id'] = $payable_id;
-        $data['payable_type'] = "App\\".$request->payable_type;
+        $data['payment_id'] = $payment_id;
+        $data['payment_type'] = "App\\".$request->payment_type;
 
     	$payment = Payment::createNew($data);
 

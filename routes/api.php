@@ -92,7 +92,7 @@ Route::group([
 
 ], function () {
 
-    Route::post('store/{payable_id}', 'PaymentController@store');
+    Route::post('store/{payable_id}', 'PaymentController@store')->middleware('permission:Record payment');
 
 });
 
@@ -187,6 +187,17 @@ Route::group([
     Route::get('fetch/{id}', 'PurchaseController@fetchPurchaseById')->middleware('permission:View purchase');
     Route::post('update/{id}', 'PurchaseController@update')->middleware('permission:Update purchase');
     Route::post('destroy/{id}', 'PurchaseController@destroyPurchase')->middleware('permission:Delete purchase');
+});
+
+Route::group([
+    'prefix' => 'sales'
+], function () {
+
+    Route::post('store', 'SaleController@store')->middleware('permission:Add sales');
+    Route::get('lists', 'SaleController@listSales')->middleware('permission:List Sales');
+    Route::get('fetch/{id}', 'SaleController@fetchSaleById')->middleware('permission:View Sale');
+    Route::post('update/{id}', 'SaleController@update')->middleware('permission:Update Sale');
+    Route::post('destroy/{id}', 'SaleController@destroySale')->middleware('permission:Delete Sale');
 });
 
 Route::group([

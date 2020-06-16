@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Inventory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -63,6 +64,10 @@ class Purchase extends Model
             'supplier_id' => $data['supplier_id'],
             'location_id' => $data['location_id'],
         ]); 
+
+         if($purchase){
+            Inventory::createNew($purchase);
+        }
         
         return $purchase;
     }

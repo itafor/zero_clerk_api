@@ -11,7 +11,7 @@ class Sale extends Model
 
       protected $fillable = [
         'category_id','sub_category_id','item','quantity','industry_id','balance','status',
-        'unit_cost','total_cost','payment_type','user_id','customer_id','location_id', 
+        'unit_cost','total_cost','payment_type','user_id','customer_id','location_id','inventory_id' 
     ];
 
 
@@ -35,6 +35,10 @@ class Sale extends Model
         return $this->belongsTo(Location::class,'location_id','id');
     }
 
+     public function inventory(){
+        return $this->belongsTo(Inventory::class,'inventory_id','id');
+    }
+
     public function industry(){
         return $this->belongsTo(Industry::class,'industry_id','id');
     }
@@ -51,7 +55,7 @@ class Sale extends Model
         $sale = self::create([
             'category_id' => $data['category_id'],
             'sub_category_id' =>  $data['sub_category_id'],
-            'item' => $data['item'],
+            'inventory_id' => $data['inventory_id'],
             'quantity' => $data['quantity'],
             'user_id' => authUser()->parent_id == null ? authUser()->id : authUser()->parent_id,
             'industry_id' => $data['industry_id'],
@@ -63,6 +67,10 @@ class Sale extends Model
             'customer_id' => $data['customer_id'],
             'location_id' => $data['location_id'],
         ]); 
+
+         if($sale){
+            Inventory::updateInventoryAfterSale($sale);
+        }
         
         return $sale;
     }
@@ -75,7 +83,7 @@ class Sale extends Model
     ])->update([
            'category_id' => $data['category_id'],
             'sub_category_id' =>  $data['sub_category_id'],
-            'item' => $data['item'],
+            'inventory_id' => $data['inventory_id'],
             'quantity' => $data['quantity'],
             'industry_id' => $data['industry_id'],
             //'unit_cost' => $data['unit_cost'],

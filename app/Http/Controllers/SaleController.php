@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Inventory;
 use App\Sale;
 use Illuminate\Http\Request;
 
@@ -17,12 +18,26 @@ class SaleController extends Controller
     	$validatedData = $request->validate([
             'category_id'=>'required',
             'sub_category_id'=>'required',
-            'item'=>'required',
+            'inventory_id'=>'required',
             'quantity'=>'required',
             'industry_id'=>'required',
             'unit_cost'=>'required',
             'location_id'=>'required',
         ]);
+
+        $data = $request->all();
+
+        $inventory = Inventory::where([
+            ['id',$data['inventory_id']],
+            ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id],
+        ])->first();
+
+        if($inventory){
+            if($data['quantity'] > $inventory->quantity){
+        return response(['error'=>'Out of stock!! Quantity entered is more than available quantity'],403);
+            }
+        }
+
 
     	$sale = Sale::createNew($request->all());
 
@@ -37,7 +52,7 @@ class SaleController extends Controller
     	$validatedData = $request->validate([
             'category_id'=>'required',
             'sub_category_id'=>'required',
-            'item'=>'required',
+            'inventory_id'=>'required',
             'quantity'=>'required',
             'industry_id'=>'required',
             'location_id'=>'required',
@@ -57,7 +72,7 @@ class SaleController extends Controller
      public function listSales(Request $request){
     	$sales = Sale::where([
         ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id]
-    	])->with(['category','subcategory','user','customer','location','industry','payments'])->get();
+    	])->with(['category','subcategory','user','customer','location','industry','inventory','payments'])->get();
 
     	if(count($sales) >=1 ){
     	return response()->json(['Sales'=>$sales]);
@@ -69,7 +84,7 @@ class SaleController extends Controller
     	$sale = Sale::where([
         ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id],
     	['id',$sale_id]
-    	])->with(['category','subcategory','user','customer','location','industry','payments'])->first();
+    	])->with(['category','subcategory','user','customer','location','industry','inventory','payments'])->first();
 
     	if($sale !=''){
     	return response()->json(['Sale'=>$sale]);

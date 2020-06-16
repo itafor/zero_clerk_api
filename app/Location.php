@@ -30,6 +30,14 @@ class Location extends Model
         return $this->hasMany(Purchase::class,'location_id','id');
     }
 
+    public function sales(){
+        return $this->hasMany(Sales::class,'location_id','id');
+    }
+
+     public function inventories(){
+        return $this->hasMany(Inventory::class,'location_id','id');
+    }
+
    public static function createNew($data)
     {
         $Location = self::create([

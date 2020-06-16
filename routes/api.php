@@ -201,6 +201,28 @@ Route::group([
 });
 
 Route::group([
+    'prefix' => 'services'
+], function () {
+
+    Route::post('store', 'ServiceController@store')->middleware('permission:Add service');
+    Route::get('lists', 'ServiceController@listServices')->middleware('permission:List services');
+    Route::get('fetch/{id}', 'ServiceController@fetchServiceById')->middleware('permission:View service');
+    Route::post('update/{id}', 'ServiceController@update')->middleware('permission:Update service');
+    Route::post('destroy/{id}', 'ServiceController@destroyService')->middleware('permission:Delete service');
+});
+
+
+Route::group([
+    'prefix' => 'inventories'
+], function () {
+
+    Route::get('lists', 'InventoryController@listInventories')->middleware('permission:List Inventories');
+    Route::get('fetch/{id}', 'InventoryController@fetchInventoryById')->middleware('permission:View Inventory');
+    Route::post('destroy/{id}', 'InventoryController@destroyInventory')->middleware('permission:Delete inventory');
+    Route::get('fetch/location/{id}', 'InventoryController@fetchInventoriesByLocation');
+});
+
+Route::group([
     'prefix' => 'category'
 ], function () {
     Route::post('store', 'CategoryController@store');

@@ -40,7 +40,7 @@ class SubCategoryController extends Controller
     	$subcategory = SubCategory::update_SubCategory($data);
 
     	if($subcategory){
-    	return response(['message'=>' subcategory updated successfully!'],200);
+    	return response(['message'=>'subcategory updated successfully!'],200);
     	}
     	return response(['error'=>'An attempt to update  subcategory failed!!'],403);
     }

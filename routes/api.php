@@ -198,6 +198,7 @@ Route::group([
     Route::get('fetch/{id}', 'SaleController@fetchSaleById')->middleware('permission:View Sale');
     Route::post('update/{id}', 'SaleController@update')->middleware('permission:Update Sale');
     Route::post('destroy/{id}', 'SaleController@destroySale')->middleware('permission:Delete Sale');
+    Route::get('daily', 'SaleController@daily_sales_report');
 });
 
 Route::group([
@@ -220,6 +221,7 @@ Route::group([
     Route::get('fetch/{id}', 'InventoryController@fetchInventoryById')->middleware('permission:View Inventory');
     Route::post('destroy/{id}', 'InventoryController@destroyInventory')->middleware('permission:Delete inventory');
     Route::get('fetch/location/{id}', 'InventoryController@fetchInventoriesByLocation');
+    Route::get('out_of_stock', 'InventoryController@inventory_out_of_stock');
 });
 
 Route::group([
@@ -240,4 +242,15 @@ Route::group([
 
 });
 
+Route::group([
+    'prefix' => 'item'
+], function () {
 
+    Route::post('store', 'ItemController@store');
+    Route::get('lists', 'ItemController@listItems');
+    Route::get('fetch/{id}', 'ItemController@fetchItemById');
+    Route::post('update/{id}', 'ItemController@update');
+    Route::post('destroy/{id}', 'ItemController@destroyItem');
+    Route::get('category/{id}', 'ItemController@fetchItemsByCategoryId');
+    Route::get('subcategory/{id}', 'ItemController@fetchItemsBySubCategoryId');
+});

@@ -23,6 +23,10 @@ class Category extends Model
         return $this->hasMany(Purchase::class,'category_id','id');
     }
 
+   public function items(){
+            return $this->hasMany(Item::class,'category_id','id');
+        }
+
 
   public static function createNew($data)
     {

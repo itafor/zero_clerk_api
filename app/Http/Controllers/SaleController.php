@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Inventory;
 use App\Sale;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class SaleController extends Controller
 {
@@ -100,5 +101,21 @@ class SaleController extends Controller
     	return response()->json(['message'=>'Sale deleted successfully']);
     	}
     	return response(['error'=>'Ooops!! Sale not found'],401);
+    }
+
+    public function daily_sales_report(){
+        $dailySales = DB::table("sales")
+    ->select(
+        "sales.quantity",
+        DB::raw("SUM(CASE WHEN created_at >= NOW() - INTERVAL 1 DAY  THEN total_cost ELSE 0 END) daily_sales",
+        DB::raw("SUM(total_cost) total_sales")
+    ))
+    ->groupBy("sales.quantity")
+    ->orderByRaw('sales.quantity ASC')->get();
+
+    if(count($dailySales) >=1 ){
+        return response()->json(['daily_sales'=>$dailySales]);
+        }
+        return response(['error'=>'Sales not found!!'],401); 
     }
 }

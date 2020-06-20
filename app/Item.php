@@ -9,7 +9,7 @@ class Item extends Model
 {
      use SoftDeletes;
    
-    protected $fillable = ['category_id','sub_category_id','item','description'];
+    protected $fillable = ['category_id','sub_category_id','industry_id','item','description'];
 
      public function category()
     {
@@ -21,9 +21,15 @@ class Item extends Model
         return $this->belongsTo(SubCategory::class,'sub_category_id','id');
     }
 
+    public function industry()
+    {
+        return $this->belongsTo(Industry::class,'industry_id','id');
+    }
+
   public static function createNew($data)
     {
         $item = self::create([
+            'industry_id' => $data['industry_id'],
             'category_id' => $data['category_id'],
             'sub_category_id' => $data['sub_category_id'],
             'item' => $data['item'],
@@ -38,6 +44,7 @@ class Item extends Model
       $item = self::where([
     		['id',$data['item_id']]
     	])->update([
+            'industry_id' => $data['industry_id'],
             'category_id' => $data['category_id'],
             'sub_category_id' => $data['sub_category_id'],
             'item' => $data['item'],

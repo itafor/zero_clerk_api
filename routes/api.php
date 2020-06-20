@@ -113,16 +113,29 @@ Route::group([
 
 ], function () {
 
-    Route::post('add', 'IndustryController@addIndustries')->middleware('permission:Add industry');
+    Route::post('add', 'UsersIndustryController@addUserIndustries')->middleware('permission:Add industry');
 ;
-    Route::get('my_industries', 'IndustryController@fetchUserIndustries')->middleware('permission:List industries');
+    Route::get('my_industries', 'UsersIndustryController@fetchUserIndustries')->middleware('permission:List industries');
 
-    Route::get('fetch/{id}', 'IndustryController@fetchMyIndustryById')->name('industry.fetch.id')->middleware('permission:View industry');
+    Route::get('fetch/{id}', 'UsersIndustryController@fetchMyIndustryById')->name('industry.fetch.id')->middleware('permission:View industry');
 
-    Route::post('edit/{id}', 'IndustryController@edit_my_industry')->name('industry.update')->middleware('permission:Update industry');
+    Route::post('edit/{id}', 'UsersIndustryController@edit_my_industry')->name('industry.update')->middleware('permission:Update industry');
 
-    Route::post('destroy/{id}', 'IndustryController@destroyIndustry')->middleware('permission:Delete industry');
+    Route::post('destroy/{id}', 'UsersIndustryController@destroyUserIndustry')->middleware('permission:Delete industry');
 
+
+});
+
+
+Route::group([
+
+    'prefix' => 'industry'
+
+], function () {
+
+    Route::post('store', 'IndustryController@store');
+    Route::get('lists', 'IndustryController@fetchIndustries');
+    Route::get('list/{id}', 'IndustryController@fetchIndustryById');
 
 });
 
@@ -232,6 +245,9 @@ Route::group([
     Route::get('fetch/{id}', 'CategoryController@fetchCategoryById');
     Route::post('update/{id}', 'CategoryController@update');
     Route::post('destroy/{id}', 'CategoryController@destroyCategory');
+    Route::get('industry/{id}', 'CategoryController@fetchCategoriesByIndustry');
+
+
 
     Route::post('subcategory/store', 'SubCategoryController@store');
     Route::get('subcategory/lists', 'SubCategoryController@listSubCategory');
@@ -253,4 +269,5 @@ Route::group([
     Route::post('destroy/{id}', 'ItemController@destroyItem');
     Route::get('category/{id}', 'ItemController@fetchItemsByCategoryId');
     Route::get('subcategory/{id}', 'ItemController@fetchItemsBySubCategoryId');
+    Route::get('industry/{id}', 'ItemController@fetchItemsByIndustry');
 });

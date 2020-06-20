@@ -10,7 +10,7 @@ class Sale extends Model
      use SoftDeletes;
 
       protected $fillable = [
-        'category_id','sub_category_id','item','quantity','industry_id','balance','status',
+        'category_id','sub_category_id','item_id','quantity','industry_id','balance','status',
         'unit_cost','total_cost','payment_type','user_id','customer_id','location_id','inventory_id' 
     ];
 

@@ -8,15 +8,15 @@ use Illuminate\Http\Request;
 class ItemController extends Controller
 {
 
- public function __construct()
+    public function __construct()
     {
-        $this->middleware(['auth:api','admin']);
-       
+        $this->middleware(['auth:api','admin'],['except' => ['listItems','fetchItemById','fetchItemsByCategoryId','fetchItemsBySubCategoryId']]);
     }
 
     public function store(Request $request)
     {
     	$validatedData = $request->validate([
+            'industry_id'=>'required',
             'category_id'=>'required',
             'sub_category_id'=>'required',
             'item'=>'required',
@@ -45,6 +45,7 @@ class ItemController extends Controller
  public function update(Request $request,$item_id)
     {
     	$validatedData = $request->validate([
+            'industry_id'=>'required',
             'category_id'=>'required',
             'sub_category_id'=>'required',
             'item'=>'required',
@@ -62,7 +63,7 @@ class ItemController extends Controller
 
 
  public function listItems(Request $request){
-    	$items = Item::with(['category','subcategory'])->get();
+    	$items = Item::with(['category','subcategory','industry'])->get();
 
     	if(count($items) >=1 ){
     	return response()->json(['items'=>$items]);
@@ -73,7 +74,7 @@ class ItemController extends Controller
  public function fetchItemById($item_id){
     	$item = Item::where([
     		['id',$item_id]
-    	])->with(['category','subcategory'])->first();
+    	])->with(['category','subcategory','industry'])->first();
 
     	if($item !=''){
     	return response()->json(['item'=>$item]);
@@ -94,7 +95,7 @@ class ItemController extends Controller
     public function fetchItemsByCategoryId($categoryId){
         $items = Item::where([
             ['category_id',$categoryId]
-        ])->with(['category','subcategory'])->get();
+        ])->with(['category','subcategory','industry'])->get();
 
         if(count($items) >= 1){
         return response()->json(['items'=>$items]);
@@ -105,7 +106,18 @@ class ItemController extends Controller
     public function fetchItemsBySubCategoryId($subcategoryId){
         $items = Item::where([
             ['sub_category_id',$subcategoryId]
-        ])->with(['category','subcategory'])->get();
+        ])->with(['category','subcategory','industry'])->get();
+
+        if(count($items) >= 1){
+        return response()->json(['items'=>$items]);
+        }
+        return response(['error'=>'Item not found!!'],401);
+    }
+
+    public function fetchItemsByIndustry($industry_id){
+        $items = Item::where([
+            ['industry_id',$industry_id]
+        ])->with(['category','subcategory','industry'])->get();
 
         if(count($items) >= 1){
         return response()->json(['items'=>$items]);

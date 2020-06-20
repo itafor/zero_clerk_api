@@ -10,7 +10,7 @@ class Inventory extends Model
      use SoftDeletes;
 
       protected $fillable = [
-        'item','quantity','location_id','user_id','purchase_id','status', 
+        'item_id','quantity','location_id','user_id','purchase_id','status', 
     ];
 
     public function user(){
@@ -23,6 +23,10 @@ class Inventory extends Model
 
      public function location(){
         return $this->belongsTo(Location::class,'location_id','id');
+    }
+
+     public function item(){
+        return $this->belongsTo(Item::class,'item_id','id');
     }
 
     public static function createNew($purchase){

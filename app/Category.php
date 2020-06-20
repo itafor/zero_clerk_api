@@ -9,7 +9,7 @@ class Category extends Model
 {
     use SoftDeletes;
    
-    protected $fillable = ['user_id','name','description'];
+    protected $fillable = ['industry_id','name','description'];
 
     public function user(){
        	return $this->belongsTo(User::class,'user_id','id');
@@ -27,11 +27,16 @@ class Category extends Model
             return $this->hasMany(Item::class,'category_id','id');
         }
 
+         public function industry(){
+            return $this->belongsTo(Industry::class,'industry_id','id');
+        }
+
 
   public static function createNew($data)
     {
         $category = self::create([
             'name' => $data['name'],
+            'industry_id' => $data['industry_id'],
             'description' =>  $data['description'],
         ]); 
         
@@ -44,6 +49,7 @@ class Category extends Model
     		['id',$data['category_id']]
     	])->update([
            'name' => $data['name'],
+           'industry_id' => $data['industry_id'],
            'description' =>  $data['description'],
         ]); 
 

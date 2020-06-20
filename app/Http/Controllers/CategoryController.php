@@ -9,13 +9,14 @@ class CategoryController extends Controller
 {
      public function __construct()
     {
-        $this->middleware(['auth:api','admin'],['except' => ['listCategories','fetchCategoryById']]);
+        $this->middleware(['auth:api','admin'],['except' => ['listCategories','fetchCategoryById','fetchCategoriesByIndustry']]);
     }
       
   public function store(Request $request)
     {
     	$validatedData = $request->validate([
             'name'=>'required',
+            'industry_id'=>'required',
         ]);
 
     	$prod_category = Category::createNew($request->all());
@@ -44,7 +45,7 @@ class CategoryController extends Controller
 
 
      public function listCategories(Request $request){
-    	$categories = Category::with(['subCategories'])->get();
+    	$categories = Category::with(['subCategories','industry'])->get();
 
     	if(count($categories) >=1 ){
     	return response()->json(['categories'=>$categories]);
@@ -55,7 +56,7 @@ class CategoryController extends Controller
      public function fetchCategoryById($prod_cat_id){
     	$category = Category::where([
     		['id',$prod_cat_id]
-    	])->with(['subCategories'])->first();
+    	])->with(['subCategories','industry'])->first();
 
     	if($category !=''){
     	return response()->json(['category'=>$category]);
@@ -71,5 +72,18 @@ class CategoryController extends Controller
     	return response()->json(['message'=>' Category deleted successfully']);
     	}
     	return response(['error'=>'Ooops!!  Category not found'],401);
+    }
+
+  public function fetchCategoriesByIndustry($industry_id){
+        $categories = Category::where([
+            ['industry_id',$industry_id],
+        ])->with(['subCategories','industry'])->get();
+
+        if(count($categories) >=1 ){
+        return response()->json([
+            'categories'=>$categories,
+        ]);
+        }
+        return response(['error'=>'categories not found!!'],403);
     }
 }

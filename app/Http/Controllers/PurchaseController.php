@@ -17,7 +17,7 @@ class PurchaseController extends Controller
     	$validatedData = $request->validate([
             'category_id'=>'required',
             'sub_category_id'=>'required',
-            'item'=>'required',
+            'item_id'=>'required',
             'quantity'=>'required',
             'industry_id'=>'required',
             'unit_cost'=>'required',
@@ -37,7 +37,7 @@ class PurchaseController extends Controller
     	$validatedData = $request->validate([
             'category_id'=>'required',
             'sub_category_id'=>'required',
-            'item'=>'required',
+            'item_id'=>'required',
             'quantity'=>'required',
             'industry_id'=>'required',
             'unit_cost'=>'required',
@@ -58,7 +58,7 @@ class PurchaseController extends Controller
      public function listPurchases(Request $request){
     	$purchases = Purchase::where([
         ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id]
-    	])->with(['category','subcategory','user','supplier','location','industry','payments'])->get();
+    	])->with(['category','subcategory','user','supplier','location','industry','item','payments'])->get();
 
     	if(count($purchases) >=1 ){
     	return response()->json(['purchases'=>$purchases]);
@@ -70,7 +70,7 @@ class PurchaseController extends Controller
     	$purchase = Purchase::where([
         ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id],
     	['id',$purchase_id]
-    	])->with(['category','subcategory','user','supplier','location','industry','payments'])->first();
+    	])->with(['category','subcategory','user','supplier','location','industry','item','payments'])->first();
 
     	if($purchase !=''){
     	return response()->json(['purchase'=>$purchase]);

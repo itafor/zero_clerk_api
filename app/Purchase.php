@@ -40,6 +40,10 @@ class Purchase extends Model
         return $this->belongsTo(Industry::class,'industry_id','id');
     }
 
+     public function item(){
+        return $this->belongsTo(Item::class,'item_id','id');
+    }
+
      public function payments()
     {
         return $this->morphMany('App\Payment', 'payment');
@@ -52,7 +56,7 @@ class Purchase extends Model
         $purchase = self::create([
             'category_id' => $data['category_id'],
             'sub_category_id' =>  $data['sub_category_id'],
-            'item' => $data['item'],
+            'item_id' => $data['item_id'],
             'quantity' => $data['quantity'],
             'user_id' => authUser()->parent_id == null ? authUser()->id : authUser()->parent_id,
             'industry_id' => $data['industry_id'],
@@ -80,7 +84,7 @@ class Purchase extends Model
     ])->update([
            'category_id' => $data['category_id'],
             'sub_category_id' =>  $data['sub_category_id'],
-            'item' => $data['item'],
+            'item_id' => $data['item_id'],
             'quantity' => $data['quantity'],
             'industry_id' => $data['industry_id'],
             //'unit_cost' => $data['unit_cost'],

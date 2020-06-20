@@ -26,6 +26,14 @@ class Item extends Model
         return $this->belongsTo(Industry::class,'industry_id','id');
     }
 
+     public function purchase(){
+        return $this->hasMany(Purchase::class,'item_id','id');
+    }
+
+   public function sales(){
+        return $this->hasMany(Sale::class,'item_id','id');
+    }
+
   public static function createNew($data)
     {
         $item = self::create([

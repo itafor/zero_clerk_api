@@ -17,27 +17,27 @@ class SaleController extends Controller
   public function store(Request $request)
     {
     	$validatedData = $request->validate([
+            'industry_id'=>'required',
             'category_id'=>'required',
             'sub_category_id'=>'required',
-            'inventory_id'=>'required',
+            'item_id'=>'required',
             'quantity'=>'required',
-            'industry_id'=>'required',
             'unit_cost'=>'required',
             'location_id'=>'required',
         ]);
 
         $data = $request->all();
 
-        $inventory = Inventory::where([
-            ['id',$data['inventory_id']],
-            ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id],
-        ])->first();
+        // $inventory = Inventory::where([
+        //     ['id',$data['inventory_id']],
+        //     ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id],
+        // ])->first();
 
-        if($inventory){
-            if($data['quantity'] > $inventory->quantity){
-        return response(['error'=>'Out of stock!! Quantity entered is more than available quantity'],403);
-            }
-        }
+        // if($inventory){
+        //     if($data['quantity'] > $inventory->quantity){
+        // return response(['error'=>'Out of stock!! Quantity entered is more than available quantity'],403);
+        //     }
+        // }
 
 
     	$sale = Sale::createNew($request->all());
@@ -51,11 +51,12 @@ class SaleController extends Controller
      public function update(Request $request,$sale_id)
     {
     	$validatedData = $request->validate([
+            'industry_id'=>'required',
             'category_id'=>'required',
             'sub_category_id'=>'required',
-            'inventory_id'=>'required',
+            'item_id'=>'required',
             'quantity'=>'required',
-            'industry_id'=>'required',
+            'unit_cost'=>'required',
             'location_id'=>'required',
         ]);
 
@@ -73,7 +74,7 @@ class SaleController extends Controller
      public function listSales(Request $request){
     	$sales = Sale::where([
         ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id]
-    	])->with(['category','subcategory','user','customer','location','industry','inventory','payments'])->get();
+    	])->with(['category','subcategory','user','customer','location','industry','item','payments'])->get();
 
     	if(count($sales) >=1 ){
     	return response()->json(['Sales'=>$sales]);
@@ -85,7 +86,7 @@ class SaleController extends Controller
     	$sale = Sale::where([
         ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id],
     	['id',$sale_id]
-    	])->with(['category','subcategory','user','customer','location','industry','inventory','payments'])->first();
+    	])->with(['category','subcategory','user','customer','location','industry','item','payments'])->first();
 
     	if($sale !=''){
     	return response()->json(['Sale'=>$sale]);

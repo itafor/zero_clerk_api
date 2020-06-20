@@ -34,7 +34,7 @@ class Inventory extends Model
     	$check_inventory = self::where([
     		['user_id', $purchase->user_id],
     		['location_id',$purchase->location_id],
-    		['item',$purchase->item]
+    		['item_id',$purchase->item_id]
     	])->first();
 
     	if($check_inventory){
@@ -43,7 +43,7 @@ class Inventory extends Model
     	}else{
 
         $inventory = self::create([
-            'item' => $purchase->item,
+            'item_id' => $purchase->item_id,
             'quantity' => $purchase->quantity,
             'user_id' => $purchase->user_id,
             'location_id' => $purchase->location_id,

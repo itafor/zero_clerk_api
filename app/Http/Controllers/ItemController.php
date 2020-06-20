@@ -63,7 +63,7 @@ class ItemController extends Controller
 
 
  public function listItems(Request $request){
-    	$items = Item::with(['category','subcategory','industry'])->get();
+    	$items = Item::with(['category','subcategory','industry','sales','purchase'])->get();
 
     	if(count($items) >=1 ){
     	return response()->json(['items'=>$items]);
@@ -74,7 +74,7 @@ class ItemController extends Controller
  public function fetchItemById($item_id){
     	$item = Item::where([
     		['id',$item_id]
-    	])->with(['category','subcategory','industry'])->first();
+    	])->with(['category','subcategory','industry','sales','purchase'])->first();
 
     	if($item !=''){
     	return response()->json(['item'=>$item]);
@@ -95,7 +95,7 @@ class ItemController extends Controller
     public function fetchItemsByCategoryId($categoryId){
         $items = Item::where([
             ['category_id',$categoryId]
-        ])->with(['category','subcategory','industry'])->get();
+        ])->with(['category','subcategory','industry','sales','purchase'])->get();
 
         if(count($items) >= 1){
         return response()->json(['items'=>$items]);
@@ -106,7 +106,7 @@ class ItemController extends Controller
     public function fetchItemsBySubCategoryId($subcategoryId){
         $items = Item::where([
             ['sub_category_id',$subcategoryId]
-        ])->with(['category','subcategory','industry'])->get();
+        ])->with(['category','subcategory','industry','sales','purchase'])->get();
 
         if(count($items) >= 1){
         return response()->json(['items'=>$items]);
@@ -117,7 +117,7 @@ class ItemController extends Controller
     public function fetchItemsByIndustry($industry_id){
         $items = Item::where([
             ['industry_id',$industry_id]
-        ])->with(['category','subcategory','industry'])->get();
+        ])->with(['category','subcategory','industry','sales','purchase'])->get();
 
         if(count($items) >= 1){
         return response()->json(['items'=>$items]);

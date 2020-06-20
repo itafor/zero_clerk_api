@@ -48,14 +48,20 @@ class Sale extends Model
         return $this->morphMany('App\Payment', 'payment');
     }
 
+      public function item(){
+        return $this->belongsTo(Item::class,'item_id','id');
+    }
+
   public static function createNew($data){
 
     $totalCost = $data['unit_cost'] * $data['quantity'];
 
         $sale = self::create([
+            'industry_id' => $data['industry_id'],
             'category_id' => $data['category_id'],
             'sub_category_id' =>  $data['sub_category_id'],
-            'inventory_id' => $data['inventory_id'],
+            'item_id' =>  $data['item_id'],
+            //'inventory_id' => $data['inventory_id'],
             'quantity' => $data['quantity'],
             'user_id' => authUser()->parent_id == null ? authUser()->id : authUser()->parent_id,
             'industry_id' => $data['industry_id'],
@@ -68,9 +74,9 @@ class Sale extends Model
             'location_id' => $data['location_id'],
         ]); 
 
-         if($sale){
-            Inventory::updateInventoryAfterSale($sale);
-        }
+        //  if($sale){
+        //     Inventory::updateInventoryAfterSale($sale);
+        // }
         
         return $sale;
     }

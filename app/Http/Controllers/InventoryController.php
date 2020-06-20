@@ -17,7 +17,7 @@ class InventoryController extends Controller
     	$inventories = Inventory::where([
     	   ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id],
     	   ['location_id',$location_id]
-    	])->with(['user','purchase','location'])->get();
+    	])->with(['user','purchase','location','item'])->get();
 
     	if(count($inventories) >=1 ){
     	return response()->json(['inventories'=>$inventories]);
@@ -28,7 +28,7 @@ class InventoryController extends Controller
     public function listInventories(Request $request){
     	$inventories = Inventory::where([
         ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id]
-    	])->with(['user','purchase','location'])->get();
+    	])->with(['user','purchase','location','item'])->get();
 
     	if(count($inventories) >=1 ){
     	return response()->json(['inventories'=>$inventories]);
@@ -40,7 +40,7 @@ class InventoryController extends Controller
     	$inventoriesOutOfStock = Inventory::where([
             ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id],
     		['status','Out of stock']
-    	])->with(['location','purchase'])->get();
+    	])->with(['user','location','purchase','item'])->get();
 
     	if(count($inventoriesOutOfStock) >=1 ){
     	return response()->json(['inventories_out_of_stock'=>$inventoriesOutOfStock]);

@@ -27,6 +27,10 @@ class Category extends Model
             return $this->hasMany(Item::class,'category_id','id');
         }
 
+  public function expenses(){
+            return $this->hasMany(Expense::class,'category_id','id');
+        }
+
          public function industry(){
             return $this->belongsTo(Industry::class,'industry_id','id');
         }

@@ -11,7 +11,7 @@ class Expense extends Model
      use SoftDeletes;
 
       protected $fillable = [
-       'user_id', 'category_id','sub_category_id','tag','description','amount','date', 
+       'user_id', 'category_id','sub_category_id','tag','description','amount','expense_date', 
     ];
 
 

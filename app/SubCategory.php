@@ -23,6 +23,10 @@ class SubCategory extends Model
         return $this->hasMany(Purchase::class,'sub_category_id','id');
     }
 
+     public function expenses(){
+        return $this->hasMany(Expense::class,'sub_category_id','id');
+    }
+
  public function items(){
             return $this->hasMany(Item::class,'sub_category_id','id');
         }

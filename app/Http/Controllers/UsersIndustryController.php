@@ -32,7 +32,7 @@ class UsersIndustryController extends Controller
     	$my_industries = MyIndustry::where('user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id
        )->with(['industry'])->get();
     	if(count($my_industries) >=1 ){
-    	return response()->json(['My industries'=>$my_industries]);
+    	return response()->json(['myindustries'=>$my_industries]);
     	}
     	return response(['error'=>'No industry found!!'],401);
     }

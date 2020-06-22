@@ -227,6 +227,18 @@ Route::group([
 
 
 Route::group([
+    'prefix' => 'expense'
+], function () {
+
+    Route::post('store', 'ExpenseController@store')->middleware('permission:Add service');
+    Route::get('lists', 'ExpenseController@listExpenses')->middleware('permission:List expenses');
+    Route::get('fetch/{id}', 'ExpenseController@fetchExpenseById')->middleware('permission:View expense');
+    Route::post('update/{id}', 'ExpenseController@update')->middleware('permission:Update expense');
+    Route::post('destroy/{id}', 'ExpenseController@destroyExpense')->middleware('permission:Delete expense');
+});
+
+
+Route::group([
     'prefix' => 'inventories'
 ], function () {
 

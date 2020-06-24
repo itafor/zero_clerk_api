@@ -283,3 +283,16 @@ Route::group([
     Route::get('subcategory/{id}', 'ItemController@fetchItemsBySubCategoryId');
     Route::get('industry/{id}', 'ItemController@fetchItemsByIndustry');
 });
+
+
+Route::group([
+
+    'prefix' => 'transfer'
+
+], function () {
+
+    Route::post('item', 'TransferController@transferItem');
+    Route::get('lists', 'TransferController@fetchTransfer');
+    Route::get('list/{id}', 'TransferController@fetchTransferById');
+
+});

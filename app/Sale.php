@@ -61,7 +61,6 @@ class Sale extends Model
             'category_id' => $data['category_id'],
             'sub_category_id' =>  $data['sub_category_id'],
             'item_id' =>  $data['item_id'],
-            //'inventory_id' => $data['inventory_id'],
             'quantity' => $data['quantity'],
             'user_id' => authUser()->parent_id == null ? authUser()->id : authUser()->parent_id,
             'industry_id' => $data['industry_id'],
@@ -74,9 +73,9 @@ class Sale extends Model
             'location_id' => $data['location_id'],
         ]); 
 
-        //  if($sale){
-        //     Inventory::updateInventoryAfterSale($sale);
-        // }
+         if($sale){
+            Inventory::updateInventoryAfterSale($sale);
+        }
         
         return $sale;
     }

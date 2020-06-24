@@ -28,27 +28,30 @@ class SaleController extends Controller
 
         $data = $request->all();
 
-        // $inventory = Inventory::where([
-        //     ['id',$data['inventory_id']],
-        //     ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id],
-        // ])->first();
+        $inventory = Inventory::where([
+            ['item_id',$data['item_id']],
+            ['location_id',$data['location_id']],
+            ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id],
+        ])->first();
 
-        // if($inventory){
-        //     if($data['quantity'] > $inventory->quantity){
-        // return response(['error'=>'Out of stock!! Quantity entered is more than available quantity'],403);
-        //     }
-        // }
+        if($inventory){
+            if($data['quantity'] > $inventory->quantity){
+        return response(['error'=>'Out of stock!! Quantity entered is more than available quantity'],403);
+            }
 
+            $sale = Sale::createNew($request->all());
 
-    	$sale = Sale::createNew($request->all());
+        if($sale){
+        return response(['message'=>'Sale created successfully!','sale'=>$sale],200);
+        }
+        return response(['error'=>'An attempt to create new sale failed!!'],403);
+        }
 
-    	if($sale){
-    	return response(['message'=>'Sale created successfully!','sale'=>$sale],200);
-    	}
-    	return response(['error'=>'An attempt to create new sale failed!!'],403);
+        return response(['error'=>'The selected location and item does not match any record in your inventory!!'],403);
+    	
     }
 
-     public function update(Request $request,$sale_id)
+ public function update(Request $request,$sale_id)
     {
     	$validatedData = $request->validate([
             'industry_id'=>'required',

@@ -34,6 +34,11 @@ class Item extends Model
         return $this->hasMany(Sale::class,'item_id','id');
     }
 
+     public function transfers()
+    {
+        return $this->hasMany(Transfer::class,'item_id','id');
+    }
+
   public static function createNew($data)
     {
         $item = self::create([

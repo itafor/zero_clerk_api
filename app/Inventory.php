@@ -59,7 +59,8 @@ class Inventory extends Model
 
     public static function updateInventoryAfterSale($sale){
     		$inventory = self::where([
-            ['id',$sale->inventory_id],
+            ['item_id',$sale->item_id],
+            ['location_id',$sale->location_id],
             ['user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id],
         ])->first();
       if($inventory){

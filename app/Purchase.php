@@ -37,7 +37,7 @@ class Purchase extends Model
     }
 
     public function industry(){
-        return $this->belongsTo(Industry::class,'industry_id','id');
+        return $this->belongsTo(Industry::class,'industry_id','id')->with(['categories']);
     }
 
      public function item(){

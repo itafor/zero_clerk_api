@@ -36,7 +36,7 @@ class Expense extends Model
             'description' => $data['description'],
             'user_id' => authUser()->parent_id == null ? authUser()->id : authUser()->parent_id,
             'amount' => $data['amount'],
-            'expense_date' => Carbon::parse(formatDate($data['expense_date'], 'd/m/Y', 'Y-m-d')),
+            // 'expense_date' => Carbon::parse(formatDate($data['expense_date'], 'd/m/Y', 'Y-m-d')),
         ]); 
         
         return $expense;
@@ -53,7 +53,7 @@ class Expense extends Model
             'tag' => $data['tag'],
             'description' => $data['description'],
             'amount' => $data['amount'],
-            'expense_date' => Carbon::parse(formatDate($data['expense_date'], 'd/m/Y', 'Y-m-d')),
+            // 'expense_date' => Carbon::parse(formatDate($data['expense_date'], 'd/m/Y', 'Y-m-d')),
         ]); 
 
       return $expense;

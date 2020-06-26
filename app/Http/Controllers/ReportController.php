@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Expense;
 use App\Purchase;
 use App\Sale;
 use Carbon\Carbon;
@@ -48,6 +49,34 @@ class ReportController extends Controller
     	return response()->json(['sale_reports'=>$sale_reports],200);
     }
     	return response()->json(['error'=>'sale not found'],404);
+
+    }
+
+        public function expenseReport(Request $request){
+      
+      $data = $request->all();
+
+      $start_date = Carbon::parse(formatDate($data['startDate'], 'd/m/Y', 'Y-m-d'));
+      $end_date   = Carbon::parse(formatDate($data['endDate'], 'd/m/Y', 'Y-m-d'));
+
+      $expense_reports = Expense::where('user_id',authUser()->parent_id == null ? authUser()->id : authUser()->parent_id)
+       ->whereBetween('expenses.created_at',[$start_date,$end_date])
+       ->with(['category','subcategory'])->get();
+
+
+       $total_expense = Expense::where('user_id',authUser()->parent_id == null ? authUser()->id : authUser()->parent_id)
+       ->whereBetween('expenses.created_at',[$start_date,$end_date])
+        ->sum('expenses.amount');
+
+
+
+    if(count($expense_reports) >= 1){
+      return response()->json([
+        'total_expense'=>$total_expense,
+        'expense_reports'=>$expense_reports,
+      ],200);
+    }
+      return response()->json(['error'=>'expense not found'],404);
 
     }
 }

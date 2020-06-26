@@ -243,6 +243,7 @@ Route::group([
 
     Route::post('purchase', 'ReportController@purchaseReport');
     Route::post('sales', 'ReportController@salesReport');
+    Route::post('expense', 'ReportController@expenseReport');
    
 });
 

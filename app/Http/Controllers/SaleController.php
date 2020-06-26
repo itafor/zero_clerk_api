@@ -108,13 +108,16 @@ class SaleController extends Controller
     }
 
     public function daily_sales_report(){
-        $dailySales = DB::table("sales")
+        $dailySales = Sale::where('sales.user_id', authUser()->parent_id == null ? authUser()->id : authUser()->parent_id)
+        ->join('items', 'items.id', '=', 'sales.item_id')
     ->select(
+        "items.item",
+        "sales.unit_cost",
         "sales.quantity",
-        DB::raw("SUM(CASE WHEN created_at >= NOW() - INTERVAL 1 DAY  THEN total_cost ELSE 0 END) daily_sales",
+        DB::raw("SUM(CASE WHEN sales.created_at >= NOW() - INTERVAL 1 DAY  THEN total_cost ELSE 0 END) daily_sales"),
         DB::raw("SUM(total_cost) total_sales")
-    ))
-    ->groupBy("sales.quantity")
+    )
+    ->groupBy(["sales.quantity","items.item","sales.unit_cost"])
     ->orderByRaw('sales.quantity ASC')->get();
 
     if(count($dailySales) >=1 ){

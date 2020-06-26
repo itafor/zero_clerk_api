@@ -20,7 +20,6 @@ class ExpenseController extends Controller
             'sub_category_id'=>'required',
             'tag'=>'required',
             'amount'=>'required',
-            'expense_date'=>'required',
         ]);
 
     	$expense = Expense::createNew($request->all());
@@ -38,7 +37,6 @@ class ExpenseController extends Controller
             'sub_category_id'=>'required',
             'tag'=>'required',
             'amount'=>'required',
-            'expense_date'=>'required',
         ]);
 
     	$data = $request->all();

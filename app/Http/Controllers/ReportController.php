@@ -79,4 +79,58 @@ class ReportController extends Controller
       return response()->json(['error'=>'expense not found'],404);
 
     }
+
+     public function grossProfit(Request $request){
+
+      $data = $request->all();
+
+      $start_date = Carbon::parse(formatDate($data['startDate'], 'd/m/Y', 'Y-m-d'));
+      $end_date   = Carbon::parse(formatDate($data['endDate'], 'd/m/Y', 'Y-m-d'));
+
+       $total_purchase = Purchase::where('user_id',authUser()->parent_id == null ? authUser()->id : authUser()->parent_id)
+       ->whereBetween('purchases.created_at',[$start_date,$end_date])
+        ->sum('purchases.total_cost');
+
+         $total_sales = Sale::where('user_id',authUser()->parent_id == null ? authUser()->id : authUser()->parent_id)
+       ->whereBetween('sales.created_at',[$start_date,$end_date])
+        ->sum('sales.total_cost');
+
+         
+      return response()->json([
+        'total_sales'=> $total_sales,
+        'total_purchase'=> $total_purchase,
+        'gross_profit'=> $total_sales - $total_purchase,
+      ],200);
+  
+
+     }
+
+          public function netProfit(Request $request){
+
+      $data = $request->all();
+
+      $start_date = Carbon::parse(formatDate($data['startDate'], 'd/m/Y', 'Y-m-d'));
+      $end_date   = Carbon::parse(formatDate($data['endDate'], 'd/m/Y', 'Y-m-d'));
+
+       $total_purchase = Purchase::where('user_id',authUser()->parent_id == null ? authUser()->id : authUser()->parent_id)
+       ->whereBetween('purchases.created_at',[$start_date,$end_date])
+        ->sum('purchases.total_cost');
+
+         $total_sales = Sale::where('user_id',authUser()->parent_id == null ? authUser()->id : authUser()->parent_id)
+       ->whereBetween('sales.created_at',[$start_date,$end_date])
+        ->sum('sales.total_cost');
+
+         $total_expense = Expense::where('user_id',authUser()->parent_id == null ? authUser()->id : authUser()->parent_id)
+       ->whereBetween('expenses.created_at',[$start_date,$end_date])
+        ->sum('expenses.amount');
+         
+      return response()->json([
+        'total_sales'=> $total_sales,
+        'total_purchase'=> $total_purchase,
+        'total_expense'=> $total_expense,
+        'net_profit'=> $total_sales - $total_expense,
+      ],200);
+  
+
+     }
 }

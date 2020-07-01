@@ -244,6 +244,8 @@ Route::group([
     Route::post('purchase', 'ReportController@purchaseReport');
     Route::post('sales', 'ReportController@salesReport');
     Route::post('expense', 'ReportController@expenseReport');
+    Route::post('gross_profit', 'ReportController@grossProfit');
+    Route::post('net_profit', 'ReportController@netProfit');
    
 });
 
@@ -305,4 +307,17 @@ Route::group([
     Route::get('lists', 'TransferController@fetchTransfer');
     Route::get('list/{id}', 'TransferController@fetchTransferById');
 
+});
+
+Route::group([
+
+    'prefix' => 'plans'
+
+], function () {
+
+    Route::post('store', 'SubscriptionPlanController@store');
+    Route::get('lists', 'SubscriptionPlanController@listPlans');
+    Route::get('list/{id}', 'SubscriptionPlanController@fetchPlanById');
+    Route::post('update/{id}', 'SubscriptionPlanController@update');
+    Route::post('destroy/{id}', 'SubscriptionPlanController@destroyPlan');
 });

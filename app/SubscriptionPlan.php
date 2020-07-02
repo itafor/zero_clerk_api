@@ -9,12 +9,13 @@ class SubscriptionPlan extends Model
 {
      use SoftDeletes;
    
-    protected $fillable = ['name','number_of_subusers','number_of_industry','number_of_transaction','amount','description'];
+    protected $fillable = ['uuid','name','number_of_subusers','number_of_industry','number_of_transaction','amount','description'];
 
 
       public static function createNew($data){
 
         $plan = self::create([
+            'uuid' => generateUUID(),
             'name' => $data['name'],
             'number_of_subusers' =>  $data['number_of_subusers'],
             'number_of_industry' => $data['number_of_industry'],

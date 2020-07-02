@@ -321,3 +321,14 @@ Route::group([
     Route::post('update/{id}', 'SubscriptionPlanController@update');
     Route::post('destroy/{id}', 'SubscriptionPlanController@destroyPlan');
 });
+
+
+Route::group([
+
+    'prefix' => 'subscription'
+
+], function () {
+
+    Route::get('generateuuid', 'SubscriptionController@uuidGeneration');
+
+});

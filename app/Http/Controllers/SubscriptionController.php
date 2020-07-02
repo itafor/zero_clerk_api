@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\SubscriptionPlan;
 use Illuminate\Http\Request;
+use Unicodeveloper\Paystack\Facades\Paystack;
 
 class SubscriptionController extends Controller
 {

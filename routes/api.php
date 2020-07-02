@@ -329,6 +329,9 @@ Route::group([
 
 ], function () {
 
-    Route::get('generateuuid', 'SubscriptionController@uuidGeneration');
+    Route::get('buy-plan/{planUuid}', 'SubscriptionController@buy_plan');
+    Route::get('buy-plan', 'SubscriptionController@redirectToGateway');
+    Route::get('payment/callback', 'SubscriptionController@handleGatewayCallback')->name('payment.callback');
+
 
 });

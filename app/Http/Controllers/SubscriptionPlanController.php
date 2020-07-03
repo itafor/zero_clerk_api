@@ -46,7 +46,7 @@ class SubscriptionPlanController extends Controller
 
     	$data = $request->all();
     	$data['plan_id'] = $plan_id;
-    	$plan = SubscriptionPlan::updateplan($data);
+    	$plan = SubscriptionPlan::updatePlan($data);
 
     	if($plan){
     	return response(['message'=>'plan updated successfully!'],200);

@@ -27,7 +27,7 @@ class SubscriptionPlan extends Model
         return $plan;
     }
 
-    public static function update_plan($data)
+    public static function updatePlan($data)
     {
       $plan = self::where([
         ['id',$data['plan_id']],
